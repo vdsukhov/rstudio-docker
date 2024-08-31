@@ -1,7 +1,8 @@
-FROM rocker/verse:4.1.0 
+FROM rocker/verse:latest
 
 RUN apt-get -y update --allow-releaseinfo-change
-RUN apt-get -y install libboost-dev \
+RUN apt-get -y install \
+    libboost-dev \
     libbamtools-dev \
     libboost-iostreams-dev \
     libboost-log-dev \
@@ -15,7 +16,9 @@ RUN apt-get -y install libboost-dev \
     libhdf5-cpp-103 \
     libarmadillo-dev \
 	build-essential \
-	wget
+	wget \
+    libhdf5-dev \
+    libgsl-dev
 RUN apt-get clean
 
 # Install miniconda
@@ -25,3 +28,15 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
+
+
+# Install R-specific packages
+# from CRAN
+RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
+
+# Biocunductor
+RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
+
+# github
+RUN R -e "devtools::install_github(c('immunogenomics/presto', 'bnprks/BPCells/r', 'satijalab/seurat-data'), quiet = TRUE)"
+RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
