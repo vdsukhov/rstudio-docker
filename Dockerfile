@@ -19,6 +19,7 @@ RUN apt-get -y install \
 	wget \
     libhdf5-dev \
     libgsl-dev
+RUN apt-get -y install fonts-firacode
 RUN apt-get clean
 
 # Install miniconda
@@ -40,3 +41,6 @@ RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser
 # github
 RUN R -e "devtools::install_github(c('immunogenomics/presto', 'bnprks/BPCells/r', 'satijalab/seurat-data'), quiet = TRUE)"
 RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
+
+COPY --chown=rstudio:rstudio ./rstudio-prefs.json /home/rstudio/.config/rstudio
+RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
