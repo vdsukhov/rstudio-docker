@@ -1,4 +1,4 @@
-FROM rocker/verse:latest
+FROM ghcr.io/washu-it-ris/rstudio:4.4.0
 
 RUN apt-get -y update --allow-releaseinfo-change
 RUN apt-get -y install \
@@ -33,7 +33,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 # Install R-specific packages
 # from CRAN
-RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
+RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'), repos='https://cloud.r-project.org/')"
 
 # Biocunductor
 RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
@@ -44,3 +44,5 @@ RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
 
 COPY --chown=rstudio:rstudio ./rstudio-prefs.json /home/rstudio/.config/rstudio
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
+
+ENTRYPOINT ["/bin/bash"]
