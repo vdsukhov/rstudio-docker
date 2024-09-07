@@ -28,19 +28,24 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
      /bin/bash ~/miniconda.sh -b -p /opt/conda
 
 # Put conda in path so we can use conda activate
-ENV PATH=$CONDA_DIR/bin:$PATH
+ENV PATH="${PATH}:${CONDA_DIR}/bin"
 
 
 # Install R-specific packages
 # from CRAN
 RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
+RUN R -e "install.packages(c('ggsci', 'knitr', 'circlize', 'pheatmap'))"
 
 # Biocunductor
 RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
+RUN R -e "BiocManager::install(c('ComplexHeatmap'))"
 
 # github
 RUN R -e "devtools::install_github(c('immunogenomics/presto', 'bnprks/BPCells/r', 'satijalab/seurat-data'), quiet = TRUE)"
 RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
+
+# Install Packages for single cell analysis
+RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
 
 COPY --chown=rstudio:rstudio ./rstudio-prefs.json /home/rstudio/.config/rstudio
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
