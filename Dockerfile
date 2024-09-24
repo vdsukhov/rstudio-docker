@@ -47,5 +47,8 @@ RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
 # Install Packages for single cell analysis
 RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
 
-COPY --chown=rstudio:rstudio ./rstudio-prefs.json /home/rstudio/.config/rstudio
+# COPY --chown=rstudio:rstudio ./rstudio-prefs.json /home/rstudio/.config/rstudio
+USER root
+COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
+USER rstudio
