@@ -1,4 +1,4 @@
-FROM rocker/verse:latest
+FROM rocker/verse:4.3
 
 RUN apt-get -y update --allow-releaseinfo-change
 RUN apt-get -y install \
@@ -33,22 +33,23 @@ ENV PATH="${PATH}:${CONDA_DIR}/bin"
 
 # Install R-specific packages
 # from CRAN
-RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
+RUN R -e "install.packages(c('devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
 RUN R -e "install.packages(c('ggsci', 'knitr', 'circlize', 'pheatmap'))"
 
 # Biocunductor
-RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
+RUN R -e "BiocManager::install(c('BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
 RUN R -e "BiocManager::install(c('ComplexHeatmap'))"
 
+# Seurat 4
+RUN R -e "remotes::install_version(\"SeuratObject\", \"4.1.4\", repos = c(\"https://satijalab.r-universe.dev\", getOption(\"repos\")))"
+RUN R -e "remotes::install_version(\"Seurat\", \"4.4.0\", repos = c(\"https://satijalab.r-universe.dev\", getOption(\"repos\")))"
+
+
 # github
-RUN R -e "devtools::install_github(c('immunogenomics/presto', 'bnprks/BPCells/r', 'satijalab/seurat-data'), quiet = TRUE)"
 RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
 
 # Install Packages for single cell analysis
 RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
 
-# COPY --chown=rstudio:rstudio ./rstudio-prefs.json /home/rstudio/.config/rstudio
-USER root
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
-USER rstudio
