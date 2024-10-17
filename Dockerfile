@@ -23,7 +23,7 @@ RUN apt-get -y install fonts-firacode
 RUN apt-get clean
 
 # Install miniconda
-ENV CONDA_DIR /opt/conda
+ENV CONDA_DIR="/opt/conda"
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
      /bin/bash ~/miniconda.sh -b -p /opt/conda
 
@@ -38,7 +38,7 @@ RUN R -e "install.packages(c('ggsci', 'knitr', 'circlize', 'pheatmap'))"
 
 # Biocunductor
 RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
-RUN R -e "BiocManager::install(c('ComplexHeatmap'))"
+RUN R -e "BiocManager::install(c('ComplexHeatmap', 'reactome.db'))"
 
 # github
 RUN R -e "devtools::install_github(c('immunogenomics/presto', 'bnprks/BPCells/r', 'satijalab/seurat-data'), quiet = TRUE)"
@@ -46,6 +46,9 @@ RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
 
 # Install Packages for single cell analysis
 RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
+
+# More packages that I usually use
+RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR'))"
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
