@@ -17,7 +17,7 @@ The image is built from the latest `rocker/verse` image, which includes R and es
 To build the Docker image:
 
 ```bash
-docker build -t r_miniconda_env .
+docker build -t vdsukhov/rstudio-docker:latest .
 ```
 
 Run docker locally:
