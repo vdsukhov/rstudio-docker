@@ -1,4 +1,4 @@
-FROM rocker/verse:latest
+FROM rocker/verse:4.4.3
 
 RUN apt-get -y update --allow-releaseinfo-change
 RUN apt-get -y install \
@@ -13,7 +13,6 @@ RUN apt-get -y install \
     libxml2-dev \
     libz-dev \
     curl \
-    libhdf5-cpp-103 \
     libarmadillo-dev \
 	build-essential \
 	wget \
@@ -34,7 +33,7 @@ ENV PATH="${PATH}:${CONDA_DIR}/bin"
 # Install R-specific packages
 # from CRAN
 RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
-RUN R -e "install.packages(c('ggsci', 'knitr', 'circlize', 'pheatmap'))"
+RUN R -e "install.packages(c('ggsci', 'knitr', 'circlize', 'pheatmap', 'qs2', 'harmony', 'hdf5r'))"
 
 # Biocunductor
 RUN R -e "BiocManager::install(c('glmGamPoi', 'BiocParallel', 'EnrichmentBrowser', 'org.Hs.eg.db', 'org.Mm.eg.db'))"
@@ -46,8 +45,10 @@ RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
 
 # Install Packages for single cell analysis
 RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
+RUN R -e "BiocManager::install(c('EnsDb.Mmusculus.v79', 'EnsDb.Hsapiens.v86', 'biovizBase'))"
+RUN R -e "setRepositories(ind=1:3); install.packages('Signac')"
 
-# More packages that I usually use
+# Some extra packages that I usually use
 RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR'))"
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
