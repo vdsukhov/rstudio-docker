@@ -48,6 +48,12 @@ RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
 RUN R -e "BiocManager::install(c('EnsDb.Mmusculus.v79', 'EnsDb.Hsapiens.v86', 'biovizBase'))"
 RUN R -e "setRepositories(ind=1:3); install.packages('Signac')"
 
+RUN R -e "BiocManager::install(c('miQC', 'motifmatchr', 'JASPAR2024', 'BSgenome.Mmusculus.UCSC.mm10', 'BSgenome.Hsapiens.UCSC.hg38'))"
+RUN R -e "BiocManager::install(c('chromVAR', 'ChIPseeker'))"
+RUN R -e "install.packages(c('ggseqlogo'))"
+RUN R -e "devtools::install_github('satijalab/seurat-wrappers', quiet = TRUE)"
+RUN R -e "devtools::install_github(repo='clevermx/SCNPrep', ref='scnm', quiet = TRUE)"
+
 # Some extra packages that I usually use
 RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR'))"
 
