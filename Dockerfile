@@ -1,4 +1,4 @@
-FROM rocker/verse:4.4.3
+FROM rocker/verse:4.5.0
 
 RUN apt-get -y update --allow-releaseinfo-change
 RUN apt-get -y install \
