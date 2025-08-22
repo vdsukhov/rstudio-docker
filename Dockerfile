@@ -32,7 +32,7 @@ ENV PATH="${PATH}:${CONDA_DIR}/bin"
 
 # Install R-specific packages
 # from CRAN
-RUN R -e "install.packages(c('Seurat', 'devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
+RUN R -e "install.packages(c('devtools', 'remotes', 'BiocManager', 'fastmatch', 'cowplot', 'msigdbr'))"
 RUN R -e "install.packages(c('ggsci', 'knitr', 'circlize', 'pheatmap', 'qs2', 'harmony', 'hdf5r'))"
 
 # Biocunductor
@@ -42,6 +42,7 @@ RUN R -e "BiocManager::install(c('ComplexHeatmap', 'reactome.db'))"
 # github
 RUN R -e "devtools::install_github(c('immunogenomics/presto', 'bnprks/BPCells/r', 'satijalab/seurat-data'), quiet = TRUE)"
 RUN R -e "devtools::install_github('ctlab/fgsea', quiet = TRUE)"
+RUN R -e "devtools::install_github('satijalab/seurat', quiet = TRUE)"
 
 # Install Packages for single cell analysis
 RUN R -e "BiocManager::install(c(\"scRepertoire\", \"motifStack\"))"
@@ -55,7 +56,7 @@ RUN R -e "devtools::install_github('satijalab/seurat-wrappers', quiet = TRUE)"
 RUN R -e "devtools::install_github(repo='clevermx/SCNPrep', ref='scnm', quiet = TRUE)"
 
 # Some extra packages that I usually use
-RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR'))"
+RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite'))"
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
