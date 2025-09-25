@@ -17,7 +17,8 @@ RUN apt-get -y install \
 	build-essential \
 	wget \
     libhdf5-dev \
-    libgsl-dev
+    libgsl-dev \
+    parallel
 RUN apt-get -y install fonts-firacode
 RUN apt-get clean
 
@@ -53,7 +54,7 @@ RUN R -e "BiocManager::install(c('miQC', 'motifmatchr', 'JASPAR2024', 'BSgenome.
 RUN R -e "BiocManager::install(c('chromVAR', 'ChIPseeker'))"
 RUN R -e "install.packages(c('ggseqlogo'))"
 RUN R -e "devtools::install_github('satijalab/seurat-wrappers', quiet = TRUE)"
-RUN R -e "devtools::install_github(repo='clevermx/SCNPrep', ref='scnm', quiet = TRUE)"
+RUN R -e "remotes::install_github('clevermx/SCNPrep@b2a6353', ref = 'scnm', force = TRUE, quiet = TRUE)"
 
 # Some extra packages that I usually use
 RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite'))"
