@@ -57,7 +57,7 @@ RUN R -e "devtools::install_github('satijalab/seurat-wrappers', quiet = TRUE)"
 RUN R -e "remotes::install_github('clevermx/SCNPrep@b2a6353', ref = 'scnm', force = TRUE, quiet = TRUE)"
 
 # Some extra packages that I usually use
-RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite'))"
+RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite', 'optparse'))"
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
