@@ -19,6 +19,8 @@ RUN apt-get -y install \
     libhdf5-dev \
     libgsl-dev \
     parallel
+
+RUN apt -y update && apt install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev
 RUN apt-get -y install fonts-firacode
 RUN apt-get clean
 
@@ -57,7 +59,11 @@ RUN R -e "devtools::install_github('satijalab/seurat-wrappers', quiet = TRUE)"
 RUN R -e "remotes::install_github('clevermx/SCNPrep@b2a6353', ref = 'scnm', force = TRUE, quiet = TRUE)"
 
 # Some extra packages that I usually use
-RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite', 'optparse'))"
+RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite', 'optparse', 'sf', 'lobstr', 'peakRAM'))"
+
+# Packages related to spatial data analysis
+RUN R -e "BiocManager::install(c('SFEData', 'SpatialExperiment', 'SpatialFeatureExperiment', 'scuttle', 'Voyager'))"
+
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
