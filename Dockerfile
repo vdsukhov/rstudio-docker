@@ -60,9 +60,11 @@ RUN R -e "remotes::install_github('clevermx/SCNPrep@b2a6353', ref = 'scnm', forc
 
 # Some extra packages that I usually use
 RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite', 'optparse', 'sf', 'lobstr', 'peakRAM'))"
+RUN R -e "install.packages(c('concaveman', 'randomcoloR'))"
 
 # Packages related to spatial data analysis
-RUN R -e "BiocManager::install(c('SFEData', 'SpatialExperiment', 'SpatialFeatureExperiment', 'scuttle', 'Voyager'))"
+RUN R -e "BiocManager::install(c('SFEData', 'SpatialExperiment', 'SpatialFeatureExperiment', 'scuttle', 'Voyager', 'sosta', 'phantasusLite'))"
+
 
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
