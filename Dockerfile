@@ -1,4 +1,4 @@
-FROM rocker/verse:4.4.3
+FROM rocker/verse:4.5.2
 
 RUN apt-get -y update --allow-releaseinfo-change
 RUN apt-get -y install \
@@ -52,10 +52,16 @@ RUN R -e "BiocManager::install(c('miQC', 'motifmatchr', 'JASPAR2024', 'BSgenome.
 RUN R -e "BiocManager::install(c('chromVAR', 'ChIPseeker'))"
 RUN R -e "install.packages(c('ggseqlogo'))"
 RUN R -e "devtools::install_github('satijalab/seurat-wrappers', quiet = TRUE)"
-RUN R -e "devtools::install_github(repo='clevermx/SCNPrep', ref='scnm', quiet = TRUE)"
+RUN R -e "remotes::install_github('clevermx/SCNPrep@b2a6353', ref = 'scnm', force = TRUE, quiet = TRUE)"
 
 # Some extra packages that I usually use
-RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR'))"
+RUN R -e "install.packages(c('cccd', 'ClusterR', 'dbscan', 'spatstat', 'randomcoloR', 'svglite', 'optparse', 'sf', 'lobstr', 'peakRAM'))"
+RUN R -e "install.packages(c('concaveman', 'randomcoloR'))"
+
+# Packages related to spatial data analysis
+RUN R -e "BiocManager::install(c('SFEData', 'SpatialExperiment', 'SpatialFeatureExperiment', 'scuttle', 'Voyager', 'sosta', 'phantasusLite'))"
+
+
 
 COPY ./rstudio-prefs.json /etc/rstudio/rstudio-prefs.json
 RUN cp /usr/share/fonts/truetype/firacode/*.ttf /etc/rstudio/fonts/
